@@ -22,12 +22,6 @@ tools_metadata = [
 # 1. 查看已注册的工具（验证注册是否成功）
 print("已注册的工具：", TOOL_REGISTRY.keys())  # 应输出 ['get_parms_value', 'boiler_assessment']
 
-# 2. 初始化 Agent（自动加载所有注册的工具）
-# agent = Agent(
-#     function_list=list(TOOL_REGISTRY.values()),  # 传入所有工具类
-#     system_prompt="你是一个锅炉安全评估助手，可调用工具回答问题。"
-# )
-
 # 步骤 1：配置所使用的模型服务
 llm_cfg={
     #'model': 'qwen3-235b-a22b', #可按需更换模型名称。模型列表：https://help.aliyun.com/zh/model-studio/getting-started/models
@@ -39,14 +33,7 @@ llm_cfg={
     }
 }
 
-#  步骤 2：创建一个智能体对象
-# bot = Assistant(
-#     llm=llm_cfg,
-#     system_message='你是一位安全评估专家',
-#     name='安全评估专家'
-# )
-
-# 步骤 3：创建一个智能体。这里我们以 `Assistant` 智能体为例，它能够使用工具并读取文件。
+# 步骤 2：创建一个智能体。可以使用`Agent`，也可以使用`Assistant`，这里我们以 `Assistant` 智能体为例，它能够使用工具并读取文件。
 system_instruction = '''在收到用户的请求后，你应该：
 - 首先得到评估对象需要用到的方法名，
 - 然后运行工具`get_parms_value(评估方法名)`以得到对应评估对象在评估过程中需要用到的参数，
@@ -60,7 +47,7 @@ bot = Assistant(llm=llm_cfg,
                 #files=files
                 )
 
-# 步骤 4：作为聊天机器人运行智能体。
+# 步骤 3：作为聊天机器人运行智能体。
 messages = []  # 这里储存聊天历史。
 while True:
     # 例如，输入请求 "绘制一只狗并将其旋转 90 度"。
